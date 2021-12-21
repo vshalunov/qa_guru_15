@@ -1,5 +1,7 @@
 package com.github.zlwqa.tests;
 
+import com.github.zlwqa.config.ApiConfig;
+import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,6 +15,7 @@ import static com.codeborne.selenide.Selenide.*;
 @Tag("MvideoTests")
 @DisplayName("Тесты для Мвидео")
 public class MvideoTests extends TestBase {
+    ApiConfig apiConfig = ConfigFactory.create(ApiConfig.class, System.getProperties());
 
     @ValueSource(strings = {"беспроводной контроллер playstation 5 dualsense rainbo ice banana",
             "воздухоувлажнитель vitek vt-2338"})
@@ -22,7 +25,7 @@ public class MvideoTests extends TestBase {
     @DisplayName("Результаты поиска")
     @ParameterizedTest(name = "Отображение товара {0} в результатах поиска")
     void displayProductAfterSearchTests(String searchQuery) {
-        open("https://www.mvideo.ru/");
+        open(apiConfig.baseURL());
         $(".input__field").setValue(searchQuery).pressEnter();
         $$("a.product-title__text").shouldHave(texts(searchQuery));
     }
@@ -37,7 +40,7 @@ public class MvideoTests extends TestBase {
     @DisplayName("Карточка товара")
     @ParameterizedTest(name = "Отображение кода {1} у товара {0}")
     void displayProductCodeInProductCardTests(String searchQuery, String productCode) {
-        open("https://www.mvideo.ru/");
+        open(apiConfig.baseURL());
         $(".input__field").setValue(searchQuery).pressEnter();
         $$("a.product-title__text").find(text(searchQuery)).click();
         $(".product-code-container").shouldHave(text(productCode));

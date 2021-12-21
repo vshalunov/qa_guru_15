@@ -7,12 +7,12 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class WebDriverUtil {
 
-    private static final WebDriverConfig config = ConfigFactory.create(WebDriverConfig.class, System.getProperties());
+    private static final WebDriverConfig webConfig = ConfigFactory.create(WebDriverConfig.class, System.getProperties());
 
     public static void configure() {
-        Configuration.browser = config.browser();
-        Configuration.browserVersion = config.versionBrowser();
-        Configuration.browserSize = config.browserSize();
+        Configuration.browser = webConfig.browser();
+        Configuration.browserVersion = webConfig.versionBrowser();
+        Configuration.browserSize = webConfig.browserSize();
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         ChromeOptions chromeOptions = new ChromeOptions();
@@ -25,8 +25,8 @@ public class WebDriverUtil {
 
         if (System.getProperty("typeProperties").equals("remote")) {
             capabilities.setCapability("enableVNC", true);
-            capabilities.setCapability("enableVideo", false);
-            Configuration.remote = config.remoteWebDriver();
+            capabilities.setCapability("enableVideo", true);
+            Configuration.remote = webConfig.remoteWebDriver();
         }
 
         capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
